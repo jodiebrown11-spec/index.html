@@ -1,47 +1,23 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PEEL OR NO PEEL?</title>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#491858,#08050d 55%);color:#fff;font:16px Arial,sans-serif}
-header{padding:12px;text-align:center;background:#09050d;border-bottom:1px solid #6d3b7c}
-.logo{font-size:clamp(28px,8vw,48px);font-weight:1000;color:#ffd21c;text-shadow:0 0 18px #ffb000}
-.wrap{max-width:1100px;margin:auto;padding:12px}
-.card{background:#110918ef;border:1px solid #5c3670;border-radius:16px;padding:12px;margin-bottom:12px}
-h3{color:#ffd21c;text-align:center}
-.join{display:flex;gap:7px;flex-wrap:wrap}
-.join input{flex:1;min-width:120px;padding:11px;border-radius:9px;border:1px solid #704585;background:#08050d;color:#fff}
-.btn{padding:11px;border:0;border-radius:10px;font-weight:900;background:#9e2be9;color:#fff}
-.room{font-weight:1000;color:#7dff5a}
-.player{text-align:center;font-size:clamp(26px,7vw,46px);font-weight:1000;color:#fff;border:2px solid #ffd21c;border-radius:15px;padding:14px;background:#1c0a25}
-.turn{margin-top:8px;text-align:center;font-weight:1000;font-size:20px;color:#7dff5a}
-.you{display:none;margin-top:10px;text-align:center;padding:12px;border-radius:12px;background:#2d0d3c;border:2px solid #ff62e8;color:#fff;font-size:26px;font-weight:1000}
-.grid{display:grid;grid-template-columns:170px 1fr 290px;gap:12px}
-.out div{padding:8px;border-bottom:1px solid #3b2645}
-.bans{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-.banana{height:100px;border-radius:18px;border:2px solid #ffe66b;background:radial-gradient(circle at 30% 15%,#fffbd0,#ffd21c 30%,#a85f00);font-size:20px;font-weight:1000;color:white}
-.banana:disabled{filter:brightness(.45);cursor:not-allowed}
-.num{background:#08050d;border:2px solid white;border-radius:50%;display:inline-grid;place-items:center;width:40px;height:40px}
-.offer{text-align:center;border:1px solid #b83cff;background:#1c0928;border-radius:12px;padding:10px;margin-top:10px}
-.offer strong{display:block;font-size:30px;color:#ff62e8}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
-.choice{padding:14px;border:0;border-radius:12px;font-size:18px;font-weight:1000}
-.choice:disabled{opacity:.4;cursor:not-allowed}
-.peel{background:#6cff29}.nopeel{background:#ff4039}
-.chat{height:300px;overflow:auto;background:#07050a;border-radius:8px;padding:8px}
-.chat div{padding:6px;border-bottom:1px solid #24152c}
-.chat b{color:#ffd21c}
-.chatrow{display:flex;gap:5px;margin-top:7px}
-.chatrow input{flex:1;padding:10px;border-radius:8px;border:1px solid #553269;background:#08050d;color:white}
-.host{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.host input,.host select{padding:11px;border-radius:9px;border:1px solid #704585;background:#08050d;color:#fff}
-.small{font-size:12px;color:#cdbbd3}
-.notice{padding:10px;border-radius:10px;background:#210d2d;border:1px solid #704585;text-align:center}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.side{display:none}}
-@media(max-width:520px){.banana{height:78px}.host{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#491858,#08050d 55%);color:#fff;font:16px Arial,sans-serif}
+header{padding:14px;text-align:center;background:#09050d;border-bottom:1px solid #6d3b7c}.logo{font-size:clamp(28px,8vw,48px);font-weight:1000;color:#ffd21c;text-shadow:0 0 18px #ffb000}
+.wrap{max-width:1100px;margin:auto;padding:12px}.card{background:#110918ef;border:1px solid #5c3670;border-radius:16px;padding:14px;margin-bottom:12px}h3{color:#ffd21c;text-align:center}
+.join{display:flex;gap:8px;flex-wrap:wrap}.join input{flex:1;min-width:120px;padding:12px;border-radius:9px;border:1px solid #704585;background:#08050d;color:#fff}.btn{padding:12px 15px;border:0;border-radius:10px;font-weight:900;background:#9e2be9;color:#fff}
+.room{font-weight:1000;color:#7dff5a}.player{text-align:center;font-size:clamp(26px,7vw,46px);font-weight:1000;color:#fff;border:2px solid #ffd21c;border-radius:15px;padding:14px;background:#1c0a25}
+.turn{margin-top:10px;text-align:center;font-weight:900;font-size:20px;color:#7dff5a}.grid{display:grid;grid-template-columns:170px 1fr 290px;gap:12px}
+.out div{padding:8px;border-bottom:1px solid #3b2645}.bans{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.banana{height:95px;border-radius:18px;border:2px solid #ffe66b;background:radial-gradient(circle at 30% 15%,#fffbd0,#ffd21c 30%,#a85f00);font-size:20px;font-weight:1000;color:#fff}.banana:disabled{filter:brightness(.45)}
+.num{background:#08050d;border:2px solid white;border-radius:50%;display:inline-grid;place-items:center;width:40px;height:40px}.offer{text-align:center;border:1px solid #b83cff;background:#1c0928;border-radius:12px;padding:10px;margin-top:10px}.offer strong{display:block;font-size:30px;color:#ff62e8}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.choice{padding:14px;border:0;border-radius:12px;font-size:18px;font-weight:1000}.peel{background:#6cff29}.nopeel{background:#ff4039}
+.chat{height:260px;overflow:auto;background:#07050a;border-radius:8px;padding:8px}.chat div{padding:6px;border-bottom:1px solid #24152c}.chat b{color:#ffd21c}.chatrow{display:flex;gap:5px;margin-top:7px}.chatrow input{flex:1;padding:10px;border-radius:8px;border:1px solid #553269;background:#08050d;color:white}
+.host{display:grid;grid-template-columns:1fr 1fr;gap:8px}.small{font-size:13px;color:#cdbbd3}.hidden{display:none!important}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.side{display:none}}@media(max-width:520px){.banana{height:78px}.host{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -51,309 +27,172 @@ h3{color:#ffd21c;text-align:center}
 <div class="card" id="joinCard">
 <h3>🎮 JOIN GAME</h3>
 <div class="join">
-<input id="name" placeholder="Your name">
+<input id="name" placeholder="Your name" maxlength="30">
 <input id="room" placeholder="Room code" maxlength="8">
 <button class="btn" onclick="joinRoom()">JOIN GAME</button>
 </div>
-<div id="status" class="small">Enter your name and the room code from the host.</div>
+<div id="status" class="small">Players enter their name and the room code from the host.</div>
+</div>
+
+<div class="card hidden" id="hostCreateCard">
+<h3>👑 HOST GAME</h3>
+<div class="join">
+<input id="hostName" placeholder="Host name" maxlength="30">
+<button class="btn" onclick="startHost()">CREATE GAME</button>
+</div>
+<div id="hostStatus" class="small">Create the room to get your shareable room code.</div>
 </div>
 
 <div class="card">
-<div class="small">ROOM CODE</div><div class="room" id="roomShow" style="font-size:32px;text-align:center;margin:4px 0">—</div><div class="small" style="text-align:center">HOST: <span id="hostShow">—</span></div>
+<div class="small">ROOM CODE: <span class="room" id="roomShow">—</span> · HOST: <span id="hostShow">—</span></div>
 <div class="player" id="current">WAITING FOR THE SPIN...</div>
-<div class="turn" id="turnText">Waiting for the host to start.</div>
-<div class="you" id="youBox"></div>
+<div class="turn" id="turn">Waiting for the host to start.</div>
 </div>
 
 <div class="grid">
-<aside class="card side out">
-<h3>🏆 OUTCOMES</h3>
-<div>💷 £4 GIFT ×1</div><div>💷 £3 GIFT ×1</div><div>💷 £2 GIFT ×1</div><div>💷 £1 GIFT ×1</div>
-<div>💀 GAME OVER ×4</div><div>🎁 GIFT ANOTHER ×4</div><div>▶️ PLAY ON ×4</div>
-</aside>
+<aside class="card side out"><h3>🏆 OUTCOMES</h3><div>💷 £4 GIFT ×1</div><div>💷 £3 GIFT ×1</div><div>💷 £2 GIFT ×1</div><div>💷 £1 GIFT ×1</div><div>💀 GAME OVER ×4</div><div>🎁 GIFT ANOTHER ×4</div><div>▶️ PLAY ON ×4</div></aside>
 
 <section>
-<div class="card">
-<h3>🍌 16 HIDDEN BANANAS</h3>
-<div class="bans" id="bans"></div>
-</div>
-
+<div class="card"><h3>🍌 16 HIDDEN BANANAS</h3><div class="bans" id="bans"></div></div>
 <div class="offer">☎️ BANKER <strong id="offer">£0</strong><span id="offerText">Waiting...</span></div>
-
-<div class="choices">
-<button class="choice peel" id="peel" disabled onclick="decide('peel')">🍌 PEEL!</button>
-<button class="choice nopeel" id="nopeel" disabled onclick="decide('nopeel')">✖ NO PEEL!</button>
-</div>
-
-<div class="card" id="giftCard" style="display:none">
-<h3>🎁 GIFT ANOTHER MEMBER</h3>
-<select id="gift"></select>
-<button class="btn" onclick="gift()" style="width:100%;margin-top:8px">🎁 GIFT THIS MEMBER</button>
-</div>
+<div class="choices"><button class="choice peel" id="peel" disabled onclick="decide('peel')">🍌 PEEL!</button><button class="choice nopeel" id="nopeel" disabled onclick="decide('nopeel')">✖ NO PEEL!</button></div>
 </section>
 
-<aside class="card">
-<h3>💬 LIVE CHAT</h3>
-<div class="chat" id="chat"></div>
-<div class="chatrow">
-<input id="msg" placeholder="Chat..." onkeydown="if(event.key==='Enter')sendChat()">
-<button class="btn" onclick="sendChat()">SEND</button>
-</div>
-</aside>
+<aside class="card"><h3>💬 LIVE CHAT</h3><div class="chat" id="chat"></div><div class="chatrow"><input id="msg" placeholder="Chat..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn" onclick="sendChat()">SEND</button></div></aside>
 </div>
 
-<div class="card" id="hostControls" style="display:none">
+<div class="card hidden" id="hostControls">
 <h3>🎛️ HOST CONTROLS</h3>
-<div id="hostRoomBanner" class="notice" style="font-size:24px;margin-bottom:10px">ROOM CODE: <strong id="hostRoomCode">—</strong><br><span class="small">Give this code to your players.</span></div><div class="host">
-<button class="btn" id="spin" onclick="spin()">🎰 SPIN NEXT PLAYER</button>
-<button class="btn" id="reset" onclick="resetGame()">🔄 RESET</button>
+<div class="host">
+<button class="btn" onclick="spin()">🎰 SPIN NEXT PLAYER</button>
+<button class="btn" onclick="resetGame()">🔄 RESET</button>
 <input id="offerInput" type="number" min="0" max="4" step=".5" placeholder="Banker offer">
 <button class="btn" onclick="setOffer()">☎️ SET BANKER OFFER</button>
+<select id="gift"></select><button class="btn" onclick="gift()">🎁 GIFT MEMBER</button>
 </div>
-<p class="small">The host is not a player and will NEVER be selected. Only people who join with the room code become players.</p>
-<div class="notice" id="playersList">No players have joined yet.</div>
+<div style="margin-top:12px"><b>👥 PLAYERS:</b> <span id="players">None yet</span></div>
+<p class="small">The host is not a player. Keep the host screen open for the whole game.</p>
 </div>
 
 </main>
-
 <script>
-let peer=null, host=false, conns=[], hostConn=null, me="", room="";
-let state={
- phase:"waiting", currentName:null, board:[], revealed:[], selected:null, offer:0,
- players:[], played:[], chat:[{name:"System",text:"Welcome! 🍌"}], history:[], hostName:""
-};
+let peer=null,host=false,conns=[],hostConn=null,me="",room="";
+let state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Welcome! 🍌"}],history:[],hostName:""};
 
 const $=id=>document.getElementById(id);
 function say(t){$("status").textContent=t}
 function shuffle(a){return a.sort(()=>Math.random()-.5)}
-function deck(){
- return shuffle(["£4","£3","£2","£1",
-  "GAME OVER","GAME OVER","GAME OVER","GAME OVER",
-  "GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER",
-  "PLAY ON","PLAY ON","PLAY ON","PLAY ON"]);
-}
+function deck(){return shuffle(["£4","£3","£2","£1","GAME OVER","GAME OVER","GAME OVER","GAME OVER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","PLAY ON","PLAY ON","PLAY ON","PLAY ON"])}
 function uid(){return Math.random().toString(36).slice(2,8).toUpperCase()}
-
-if(new URLSearchParams(location.search).get("host")==="1"){
-  document.getElementById("joinCard").innerHTML=
-  '<h3>🎛️ HOST</h3><div class="join"><input id="name" placeholder="Host name"><button class="btn" onclick="createHost()">CREATE GAME</button></div><div id="status" class="small">Host mode.</div>';
-}
-function createHost(){
- me=$("name").value.trim();
- if(!me)return alert("Enter your name.");
- room=uid(); host=true;
- state.hostName=me; state.players=[]; // HOST IS NOT A PLAYER
-
- $("joinCard").style.display="none";
- $("hostControls").style.display="block";
-
- // Show the room code immediately, even before PeerJS finishes connecting.
- $("roomShow").textContent=room;
- $("hostShow").textContent=me;
- $("current").textContent="GAME READY — WAITING FOR PLAYERS";
- $("turnText").textContent="Share the room code below with your players.";
- say("Your room code is "+room);
-
- peer=new Peer("peel-"+room,{debug:0});
-
- peer.on("open",()=>{
-  $("roomShow").textContent=room;
-  $("hostShow").textContent=me;
-  say("Game created! Room code: "+room);
-  render();
- });
-
- peer.on("connection",c=>{
-  c.on("open",()=>{
-   conns.push(c);
-   c.on("data",d=>hostData(c,d));
-   c.on("close",()=>{conns=conns.filter(x=>x!==c)});
-   send(c,{type:"state",state});
-  });
- });
- peer.on("error",e=>say("Host error: "+e.message));
-}
-
-function joinRoom(){
- me=$("name").value.trim();
- room=$("room").value.trim().toUpperCase();
- if(!me||!room)return alert("Enter your name and room code.");
- host=false;
- peer=new Peer();
-
- peer.on("open",()=>{
-  hostConn=peer.connect("peel-"+room,{reliable:true});
-  hostConn.on("open",()=>{
-   send(hostConn,{type:"join",name:me});
-   say("Joining room "+room+"...");
-  });
-  hostConn.on("data",d=>receive(d));
-  hostConn.on("close",()=>say("Disconnected from host."));
- });
- peer.on("error",e=>alert("Could not join room. Check the code."));
-}
-
 function send(c,d){if(c&&c.open)c.send(d)}
-function broadcast(d){conns.forEach(c=>{if(c.open)c.send(d)})}
-
-function hostData(c,d){
- if(d.type==="join"){
-  let clean=String(d.name||"Player").trim().slice(0,20);
-  if(!clean)return;
-  if(!state.players.some(p=>p.name===clean)){
-   let number=state.players.length+1;
-   state.players.push({name:clean,number,played:false});
-  }
-  broadcast({type:"state",state}); send(c,{type:"state",state}); render();
- }
- else if(d.type==="action"){action(d.action,d.value,c)}
- else if(d.type==="chat"){
-  state.chat.push({name:d.name,text:d.text});
-  broadcast({type:"state",state});render();
- }
-}
-
-function receive(d){
- if(d.type==="state"){state=d.state;render()}
-}
-
-function request(a,v){
- if(host)action(a,v);
- else if(hostConn&&hostConn.open)send(hostConn,{type:"action",action:a,value:v});
-}
-
-function playerObj(name){return state.players.find(p=>p.name===name)}
+function broadcast(d){conns.forEach(c=>send(c,d))}
 function sync(){broadcast({type:"state",state});render()}
 
-function action(a,v,c){
- if(a==="spin"){
-  if(!host||state.phase!=="waiting")return;
-  let waiting=state.players.filter(p=>!p.played);
-  if(!waiting.length){
-   state.phase="finished";state.last="🏆 Everyone has played!";
-   return sync();
+function startHost(){
+  const n=$("hostName").value.trim(); if(!n)return alert("Enter your host name.");
+  me=n;host=true;room=uid();
+  state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Welcome! 🍌"}],history:[],hostName:n};
+  $("hostCreateCard").classList.add("hidden"); $("joinCard").classList.add("hidden"); $("hostControls").classList.remove("hidden");
+  $("roomShow").textContent=room;$("hostShow").textContent=n;
+  $("hostStatus").textContent="Creating room...";
+  peer=new Peer("peel-"+room,{debug:0});
+  peer.on("open",()=>{$("hostStatus").textContent="ROOM CODE: "+room+" — share this with players.";render()});
+  peer.on("connection",c=>{
+    c.on("open",()=>{conns.push(c);send(c,{type:"state",state});});
+    c.on("data",d=>hostData(c,d));
+    c.on("close",()=>{conns=conns.filter(x=>x!==c);render()});
+  });
+  peer.on("error",e=>{$("hostStatus").textContent="Host connection error: "+e.type;});
+}
+function joinRoom(){
+  me=$("name").value.trim();room=$("room").value.trim().toUpperCase();
+  if(!me||!room)return alert("Enter your name and the host's room code.");
+  host=false;peer=new Peer();
+  peer.on("open",()=>{hostConn=peer.connect("peel-"+room,{reliable:true});
+    hostConn.on("open",()=>{send(hostConn,{type:"join",name:me});say("Joining room "+room+"...")});
+    hostConn.on("data",receive);
+    hostConn.on("close",()=>say("Disconnected from host."));
+  });
+  peer.on("error",e=>alert("Could not join room. Check the code."));
+}
+function hostData(c,d){
+  if(d.type==="join"){
+    if(d.name&&!state.players.includes(d.name))state.players.push(d.name);
+    send(c,{type:"state",state});broadcast({type:"state",state});render();
+  }else if(d.type==="action")action(d.action,d.value,d.name||"",c);
+  else if(d.type==="chat"){state.chat.push({name:d.name,text:d.text});broadcast({type:"state",state});render()}
+}
+function receive(d){if(d.type==="state"){state=d.state;render()}}
+
+function request(a,v){
+  if(host)action(a,v,me,null);
+  else send(hostConn,{type:"action",action:a,value:v,name:me});
+}
+function action(a,v,actor){
+  if(a==="spin"&&host){
+    if(state.phase!=="waiting")return;
+    const waiting=state.players.filter(n=>!state.played.includes(n));
+    if(!waiting.length){state.phase="finished";state.last="🏆 Everyone has played!";return sync()}
+    state.currentName=waiting[Math.floor(Math.random()*waiting.length)];
+    state.board=deck();state.revealed=[];state.selected=null;state.offer=0;state.phase="playing";
+    state.last="🎰 "+state.currentName+" has been selected!";
+    return sync();
   }
-  let p=waiting[Math.floor(Math.random()*waiting.length)];
-  state.currentName=p.name;
-  state.board=deck();state.revealed=[];state.selected=null;state.offer=0;
-  state.phase="playing";
-  state.last="🎰 "+p.name+" has been selected!";
-  sync();
- }
- else if(a==="choose"){
-  if(state.phase!=="playing"||state.selected!==null||state.currentName!==me)return;
-  let i=Number(v);
-  if(!Number.isInteger(i)||i<0||i>15||state.revealed.includes(i))return;
-  state.selected=i;state.revealed.push(i);
-  sync();
- }
- else if(a==="offer"){
-  if(!host||state.phase!=="playing")return;
-  state.offer=Math.max(0,Math.min(4,Number(v)||0));sync();
- }
- else if(a==="decision"){
-  if(state.currentName!==me||state.phase!=="playing"||state.selected===null)return;
-  let r=state.board[state.selected];
-  if(v==="nopeel"){finish("BANKER OFFER £"+state.offer);return}
-  if(r==="PLAY ON"){state.selected=null;state.last="▶️ PLAY ON! Choose another banana.";sync()}
-  else if(r==="GAME OVER")finish("GAME OVER");
-  else if(r==="GIFT ANOTHER"){state.phase="gift";state.last="🎁 Choose another member to receive the gift.";sync()}
-  else finish(r);
- }
- else if(a==="gift"){
-  if(state.phase!=="gift"||state.currentName!==me)return;
-  let p=state.players.find(x=>x.name===v);
-  if(p&&p.name!==state.currentName)finish("GIFT ANOTHER → "+p.name);
- }
- else if(a==="reset"){
-  if(!host)return;
-  state.phase="waiting";state.currentName=null;state.board=[];state.revealed=[];state.selected=null;
-  state.offer=0;state.players.forEach(p=>p.played=false);
-  state.history=[];state.last="🔄 Game reset.";
-  sync();
- }
+  if(a==="choose"){
+    if(actor!==state.currentName||state.phase!=="playing"||state.selected!==null)return;
+    const i=+v;if(!Number.isInteger(i)||i<0||i>15||state.revealed.includes(i))return;
+    state.selected=i;state.revealed.push(i);return sync();
+  }
+  if(a==="offer"&&host){state.offer=Math.max(0,Math.min(4,+v||0));return sync()}
+  if(a==="decision"){
+    if(actor!==state.currentName||state.phase!=="playing"||state.selected===null)return;
+    const r=state.board[state.selected];
+    if(v==="nopeel"){return finish("BANKER OFFER £"+state.offer)}
+    if(r==="PLAY ON"){state.selected=null;state.last="▶️ PLAY ON!";return sync()}
+    if(r==="GAME OVER")return finish("GAME OVER");
+    if(r==="GIFT ANOTHER"){state.phase="gift";state.last="🎁 Choose another member.";return sync()}
+    return finish(r);
+  }
+  if(a==="gift"&&host===false){
+    if(actor!==state.currentName||state.phase!=="gift")return;
+    if(v&&v!==state.currentName&&state.players.includes(v))return finish("GIFT ANOTHER → "+v)
+  }
+  if(a==="reset"&&host){state.phase="waiting";state.currentName=null;state.board=[];state.revealed=[];state.selected=null;state.offer=0;state.played=[];state.history=[];state.last="🔄 Game reset.";return sync()}
 }
-
 function finish(r){
- let p=playerObj(state.currentName);
- if(p)p.played=true;
- state.history.unshift({name:state.currentName,result:r});
- state.last="🏁 "+state.currentName+": "+r;
- state.phase="waiting";state.currentName=null;state.selected=null;state.offer=0;
- sync();
+  state.played.push(state.currentName);state.history.unshift({name:state.currentName,result:r});
+  state.last="🏁 "+state.currentName+": "+r;state.phase="waiting";state.currentName=null;state.selected=null;state.offer=0;sync();
 }
-
-function spin(){request("spin")}
-function setOffer(){request("offer",$("offerInput").value)}
-function decide(x){request("decision",x)}
-function gift(){request("gift",$("gift").value)}
-function resetGame(){request("reset")}
-
+function spin(){request("spin")}function setOffer(){request("offer",$("offerInput").value)}function decide(x){request("decision",x)}function gift(){request("gift",$("gift").value)}function resetGame(){request("reset")}
 function sendChat(){
- let t=$("msg").value.trim();if(!t)return;
- let m={name:me||"Viewer",text:t};$("msg").value="";
- if(host){state.chat.push(m);broadcast({type:"state",state});render()}
- else if(hostConn&&hostConn.open)send(hostConn,{type:"chat",name:me,text:t});
-}
-
-function render(){
- if(host){$("hostRoomCode").textContent=room||"—";$("roomShow").textContent=room||"—";$("hostShow").textContent=me||"—";}
- $("current").textContent=state.currentName||"WAITING FOR THE SPIN...";
- $("offer").textContent="£"+state.offer;
- $("offerText").textContent=state.last||(state.phase==="playing"?"Choose a banana.":"Waiting for the host.");
-
- let mePlayer=playerObj(me);
- let selectedPlayer=playerObj(state.currentName);
-
- if(state.currentName){
-  $("turnText").textContent=state.currentName===me
-   ?"🍌 IT'S YOUR TURN!"
-   :"🍌 "+state.currentName+" is playing!";
- }else $("turnText").textContent=state.phase==="finished"?"Game finished.":"Waiting for the host to spin.";
-
- if(state.currentName===me&&mePlayer){
-  $("youBox").style.display="block";
-  $("youBox").textContent="🎯 YOU ARE PLAYER #"+mePlayer.number+" — YOU'VE BEEN SELECTED!";
- }else{
-  $("youBox").style.display="none";
- }
-
- $("bans").innerHTML="";
- for(let i=0;i<16;i++){
-  let v=state.board[i];
-  let b=document.createElement("button");
-  b.className="banana";
-  let active=state.phase==="playing"&&state.selected===null&&state.currentName===me;
-  b.disabled=!active||state.revealed.includes(i);
-  if(state.revealed.includes(i)&&v!==null)b.innerHTML=label(v);
-  else b.innerHTML='<span class="num">'+(i+1)+'</span>';
-  b.onclick=()=>request("choose",i);
-  $("bans").appendChild(b);
- }
-
- let can=state.phase==="playing"&&state.selected!==null&&state.currentName===me;
- $("peel").disabled=!can;
- $("nopeel").disabled=!can;
-
- let giftable=state.players.filter(p=>p.name!==state.currentName);
- $("gift").innerHTML=giftable.map(p=>'<option value="'+esc(p.name)+'">Player #'+p.number+" — "+esc(p.name)+"</option>").join("");
- $("giftCard").style.display=(state.phase==="gift"&&state.currentName===me)?"block":"none";
-
- $("chat").innerHTML=state.chat.slice(-80).map(x=>'<div><b>'+esc(x.name)+':</b> '+esc(x.text)+'</div>').join("");
- let c=$("chat");c.scrollTop=c.scrollHeight;
-
- $("playersList").innerHTML=state.players.length
-  ?state.players.map(p=>"🎮 Player #"+p.number+" — "+esc(p.name)+(p.played?" ✅":"")).join("<br>")
-  :"No players have joined yet.";
-}
-
-function label(v){
- return v==="GAME OVER"?"💀 GAME OVER":
- v==="GIFT ANOTHER"?"🎁 GIFT ANOTHER":
- v==="PLAY ON"?"▶️ PLAY ON":v+" GIFT";
+  const t=$("msg").value.trim();if(!t)return;$("msg").value="";
+  const m={name:me||"Viewer",text:t};
+  if(host){state.chat.push(m);broadcast({type:"state",state});render()}else send(hostConn,{type:"chat",name:me,text:t});
 }
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-
+function label(v){return v==="GAME OVER"?"💀 GAME OVER":v==="GIFT ANOTHER"?"🎁 GIFT ANOTHER":v==="PLAY ON"?"▶️ PLAY ON":v+" GIFT"}
+function render(){
+  $("roomShow").textContent=room||"—";$("hostShow").textContent=state.hostName||"—";
+  $("current").textContent=state.currentName||"WAITING FOR THE SPIN...";
+  const mine=state.currentName===me;
+  $("turn").textContent=mine&&state.phase==="playing"?"🔥 YOU HAVE BEEN SELECTED! Choose a banana!":state.phase==="gift"&&mine?"🎁 YOU HAVE BEEN SELECTED TO CHOOSE WHO GETS THE GIFT!":state.currentName?("🎰 "+state.currentName+" is playing."): "Waiting for the host to spin.";
+  $("offer").textContent="£"+state.offer;$("offerText").textContent=state.last||"Waiting...";
+  $("bans").innerHTML="";
+  state.board.forEach((v,i)=>{
+    const b=document.createElement("button");b.className="banana";
+    const active=state.phase==="playing"&&state.selected===null&&mine;
+    b.disabled=!active||state.revealed.includes(i);
+    b.innerHTML=state.revealed.includes(i)?label(v):'<span class="num">'+(i+1)+'</span>';
+    b.onclick=()=>request("choose",i);$("bans").appendChild(b);
+  });
+  const can=state.phase==="playing"&&state.selected!==null&&mine;
+  $("peel").disabled=!can;$("nopeel").disabled=!can;
+  $("gift").innerHTML=state.players.filter(n=>n!==state.currentName).map(n=>'<option>'+esc(n)+'</option>').join("");
+  $("gift").style.display=state.phase==="gift"&&mine?"block":"none";
+  $("chat").innerHTML=state.chat.slice(-80).map(x=>'<div><b>'+esc(x.name)+':</b> '+esc(x.text)+'</div>').join("");
+  $("players").textContent=state.players.length?state.players.join(", "):"No players yet";
+  const c=$("chat");c.scrollTop=c.scrollHeight;
+}
 render();
 </script>
 </body>
