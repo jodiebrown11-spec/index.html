@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PEEL OR NO PEEL?</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#491858,#08050d 55%);color:#fff;font:16px Arial,sans-serif}
+header{padding:12px;text-align:center;background:#09050d;border-bottom:1px solid #6d3b7c}
+.logo{font-size:clamp(28px,8vw,48px);font-weight:1000;color:#ffd21c;text-shadow:0 0 18px #ffb000}
+.wrap{max-width:1100px;margin:auto;padding:12px}
+.card{background:#110918ef;border:1px solid #5c3670;border-radius:16px;padding:12px;margin-bottom:12px}
+h3{color:#ffd21c;text-align:center}
+.join{display:flex;gap:7px;flex-wrap:wrap}
+.join input,select{flex:1;min-width:120px;padding:11px;border-radius:9px;border:1px solid #704585;background:#08050d;color:#fff}
+.btn{padding:11px;border:0;border-radius:10px;font-weight:900;background:#9e2be9;color:#fff}
+.room{font-weight:1000;color:#7dff5a}
+.player{text-align:center;font-size:clamp(26px,7vw,46px);font-weight:1000;color:#fff;border:2px solid #ffd21c;border-radius:15px;padding:10px;background:#1c0a25}
+.notice{display:none;text-align:center;background:#6cff29;color:#071000;font-size:25px;font-weight:1000;border-radius:14px;padding:16px;margin-top:10px}
+.grid{display:grid;grid-template-columns:170px 1fr 290px;gap:12px}
+.out div{padding:8px;border-bottom:1px solid #3b2645}
+.bans{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.banana{height:100px;border-radius:18px;border:2px solid #ffe66b;background:radial-gradient(circle at 30% 15%,#fffbd0,#ffd21c 30%,#a85f00);font-size:20px;font-weight:1000;color:white}
+.banana:disabled{filter:brightness(.45);opacity:.7}
+.num{background:#08050d;border:2px solid white;border-radius:50%;display:inline-grid;place-items:center;width:40px;height:40px}
+.offer{text-align:center;border:1px solid #b83cff;background:#1c0928;border-radius:12px;padding:10px;margin-top:10px}
+.offer strong{display:block;font-size:30px;color:#ff62e8}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.choice{padding:14px;border:0;border-radius:12px;font-size:18px;font-weight:1000;cursor:pointer}.choice:disabled{cursor:not-allowed;filter:brightness(.45);opacity:.65}
+.peel{background:#6cff29}.nopeel{background:#ff4039}
+.chat{height:300px;overflow:auto;background:#07050a;border-radius:8px;padding:8px}
+.chat div{padding:6px;border-bottom:1px solid #24152c}
+.chat b{color:#ffd21c}
+.chatrow{display:flex;gap:5px;margin-top:7px}
+.chatrow input{flex:1;padding:10px;border-radius:8px;border:1px solid #553269;background:#08050d;color:white}
+.host{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.small{font-size:12px;color:#cdbbd3}
+.hostOnly{display:none}.playerOnly{display:none}body[data-role="host"] .hostOnly{display:block}body[data-role="player"] .hostOnly{display:none!important}body[data-role="player"] #hostEntryCard{display:none!important}body[data-role="player"] #hostCreateCard{display:none!important}body[data-role="host"] #joinCard{display:none!important}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.side{display:none}}
+@media(max-width:520px){.banana{height:78px}.host{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="logo">🍌 PEEL <small>OR</small> NO PEEL?</div></header>
+<main class="wrap">
+
+<div class="card" id="joinCard">
+<h3>🎮 JOIN GAME</h3>
+<div class="join">
+<input id="name" placeholder="Your name">
+<input id="room" placeholder="Room code">
+<button class="btn" onclick="joinGame()">JOIN GAME</button>
+</div>
+<div id="status" class="small">Players enter their name and the room code from the host.</div>
+</div>
+
+<div class="card" id="hostEntryCard" style="text-align:center">
+<h3>👑 HOST</h3>
+<button class="btn" onclick="showHostCreate()">👑 HOST A GAME</button>
+</div>
+
+<div class="card hostOnly" id="hostCreateCard">
+<h3>👑 HOST GAME</h3>
+<div class="join">
+<input id="hostName" placeholder="Host name">
+<button class="btn" onclick="createGame()">CREATE GAME</button>
+</div>
+<div id="hostStatus" class="small">Create the room and share the code.</div>
+</div>
+
+<div class="card">
+<div class="small">ROOM CODE: <span class="room" id="roomShow">—</span> · HOST: <span id="hostShow">—</span></div>
+<div class="player" id="current">WAITING FOR THE SPIN...</div>
+<div class="notice" id="selectedNotice"></div>
+</div>
+
+<div class="card hostOnly" id="hostControls">
+<h3>🎛️ HOST CONTROLS</h3>
+<div class="host">
+<button class="btn" onclick="spin()">🎰 SPIN NEXT PLAYER</button>
+<button class="btn" onclick="resetGame()">🛑 END GAME &amp; NEW GAME</button><button class="btn" onclick="shareGameLink()">📲 SHARE GAME LINK</button>
+<button class="btn" onclick="leaveGame()">🚪 END ROOM / START FRESH</button>
+<select id="gift"></select>
+<button class="btn" onclick="gift()">🎁 GIFT MEMBER</button>
+</div>
+<p class="small" id="hostRoomHelp">The host controls the game. The host is never selected as a player.</p><div class="small">Players in room: <span id="playerCount">0</span></div>
+</div>
+
+<div class="grid">
+<aside class="card side out">
+<h3>🏆 OUTCOMES</h3>
+<div>💷 £4 GIFT ×1</div><div>💷 £3 GIFT ×1</div><div>💷 £2 GIFT ×1</div><div>💷 £1 GIFT ×1</div>
+<div>💀 GAME OVER ×4</div><div>🎁 GIFT ANOTHER ×4</div><div>▶️ PLAY ON ×4</div>
+</aside>
+
+<section>
+<div class="card"><h3>🍌 16 HIDDEN BANANAS</h3><div class="bans" id="bans"></div></div>
+<div class="gameStatus"><strong id="offerText">Waiting...</strong></div>
+<div class="choices playerChoices">
+<button class="choice peel" id="peel" disabled onclick="decide('peel')">🍌 PEEL!</button>
+<button class="choice nopeel" id="nopeel" disabled onclick="decide('nopeel')">✖ NO PEEL!</button>
+</div>
+</section>
+
+<aside class="card">
+<h3>💬 LIVE CHAT</h3>
+<div class="chat" id="chat"></div>
+<div class="chatrow"><input id="msg" placeholder="Chat..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn" onclick="sendChat()">SEND</button></div>
+</aside>
+</div>
+
+
+
+</main>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+let peer=null,host=false,conns=[],hostConn=null,me="",room="",reconnectTimer=null,joining=false;
+let state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Welcome! 🍌"}],last:"Waiting for the host to spin."};
+
+const $=id=>document.getElementById(id);
+const uid=()=>Math.random().toString(36).slice(2,8).toUpperCase();
+function say(t){$("status").textContent=t}
+function shuffle(a){return a.sort(()=>Math.random()-.5)}
+function deck(){return shuffle(["£4","£3","£2","£1","GAME OVER","GAME OVER","GAME OVER","GAME OVER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","PLAY ON","PLAY ON","PLAY ON","PLAY ON"])}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function label(v){return v==="GAME OVER"?"💀 GAME OVER":v==="GIFT ANOTHER"?"🎁 GIFT ANOTHER":v==="PLAY ON"?"▶️ PLAY ON":v+" GIFT"}
+
+function saveSession(){
+  try{
+    localStorage.setItem("peelRole", host ? "host" : "player");
+    localStorage.setItem("peelRoom", room || "");
+    localStorage.setItem("peelName", me || "");
+    if(host) localStorage.setItem("peelState", JSON.stringify(state));
+  }catch(e){}
+}
+function loadSession(){
+  try{
+    const role=localStorage.getItem("peelRole");
+    const savedRoom=localStorage.getItem("peelRoom");
+    const savedName=localStorage.getItem("peelName");
+    // A room in the URL must never be overridden by an old player session.
+    const urlRoom=new URLSearchParams(location.search).get("room");
+    if(urlRoom && role!=="host"){
+      room=urlRoom.toUpperCase();
+      me=savedName||"";
+      host=false;
+      if(me) $("name").value=me;
+      $("room").value=room;
+      return false;
+    }
+    if(!role || !savedRoom || !savedName) return false;
+    room=savedRoom.toUpperCase(); me=savedName; host=role==="host";
+    if(host){
+      const saved=localStorage.getItem("peelState");
+      if(saved) state=JSON.parse(saved);
+      $("joinCard").style.display="none";
+      $("hostEntryCard").style.display="none";
+      $("hostCreateCard").style.display="none";
+      startHostConnection();
+    }else{
+      $("hostEntryCard").style.display="none";
+      showPlayerJoin("Enter the room details and tap JOIN GAME to connect.");
+    }
+    return true;
+  }catch(e){return false}
+}
+function clearSession(){
+  try{
+    ["peelRole","peelRoom","peelName","peelState"].forEach(k=>localStorage.removeItem(k));
+  }catch(e){}
+}
+function leaveGame(){
+  if(!confirm(host ? "End this room and start fresh?" : "Leave this game and start fresh?")) return;
+  clearTimeout(reconnectTimer);
+  if(peer){try{peer.destroy()}catch(e){}}
+  peer=null; host=false; conns=[]; hostConn=null; me=""; room=""; joining=false;
+  state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Welcome! 🍌"}],last:"Waiting for the host to spin."};
+  $("name").value=""; $("room").value=""; $("hostName").value="";
+  render(); window.scrollTo({top:0,behavior:"smooth"});
+}
+function showHostCreate(){
+  $("hostEntryCard").style.display="none";
+  $("joinCard").style.display="none";
+  $("hostCreateCard").style.display="block";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function shareGameLink(){
+  if(!host || !room)return;
+  const url=location.origin+location.pathname+"?room="+encodeURIComponent(room);
+  if(navigator.share){navigator.share({title:"PEEL OR NO PEEL?",text:"Join my PEEL OR NO PEEL game! Room code: "+room,url}).catch(()=>{});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>say("Game link copied — send it to your players."));}
+  else {prompt("Copy this game link:",url);}
+}
+function createGame(){
+  me=$("hostName").value.trim();
+  if(!me)return alert("Enter the host name.");
+  host=true; room=uid();
+  state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Game created! 🍌"}],last:"Waiting for the host to spin."};
+  saveSession();
+  $("hostCreateCard").style.display="none";
+  $("hostEntryCard").style.display="none";
+  $("joinCard").style.display="none";
+  startHostConnection();
+}
+function startHostConnection(){
+  clearTimeout(reconnectTimer);
+  if(peer){try{peer.destroy()}catch(e){}}
+  peer=new Peer("peel-"+room,{debug:0});
+  peer.on("open",()=>{
+    $("roomShow").textContent=room;
+    $("hostShow").textContent=me;
+    $("hostStatus").textContent="ROOM CODE: "+room+" — Share this code with your players.";
+    saveSession();
+    render();
+  });
+  peer.on("connection",c=>{
+    c.on("open",()=>{
+      if(!conns.includes(c))conns.push(c);
+      c.on("data",d=>hostData(c,d));
+      c.on("close",()=>{conns=conns.filter(x=>x!==c)});
+      c.on("error",()=>{});
+      send(c,{type:"state",state:JSON.parse(JSON.stringify(state))});
+    });
+  });
+  peer.on("error",e=>{
+    if(e && e.type==="unavailable-id"){
+      reconnectTimer=setTimeout(startHostConnection,1200);
+    }else{
+      $("hostStatus").textContent="Host connection problem — please wait or refresh.";
+    }
+  });
+}
+function joinGame(){
+  const enteredName=$("name").value.trim();
+  const enteredRoom=$("room").value.trim().toUpperCase();
+  if(!enteredName||!enteredRoom){
+    $("status").textContent="Enter your name and the room code.";
+    return;
+  }
+  me=enteredName; room=enteredRoom; host=false; joining=true;
+  saveSession();
+  startPlayerConnection(true);
+}
+function showPlayerJoin(message){
+  if(host)return;
+  $("joinCard").style.display="block";
+  $("hostEntryCard").style.display="none";
+  $("hostCreateCard").style.display="none";
+  if(me) $("name").value=me;
+  if(room) $("room").value=room;
+  if(message) $("status").textContent=message;
+  render();
+}
+function startPlayerConnection(fromJoin){
+  if(!room||!me){showPlayerJoin("Enter your name and room code.");return;}
+  clearTimeout(reconnectTimer);
+  if(peer){try{peer.destroy()}catch(e){}}
+  hostConn=null;
+  joining=!!fromJoin;
+  $("status").textContent="Connecting to room "+room+"…";
+  peer=new Peer({debug:0});
+  peer.on("open",()=>connectHost());
+  peer.on("disconnected",()=>{
+    hostConn=null;
+    showPlayerJoin("Disconnected from host. Tap JOIN GAME to reconnect.");
+  });
+  peer.on("error",e=>{
+    const msg=(e&&e.type==="peer-unavailable")
+      ?"Room not found or the host is offline. Check the room code and try again."
+      :"Connection problem. Tap JOIN GAME to try again.";
+    hostConn=null; showPlayerJoin(msg);
+  });
+}
+function connectHost(){
+  try{
+    if(!peer||peer.destroyed)return;
+    if(hostConn&&hostConn.open)return;
+    $("status").textContent="Connecting to host…";
+    hostConn=peer.connect("peel-"+room,{reliable:true,serialization:"json"});
+    hostConn.on("open",()=>{
+      clearTimeout(reconnectTimer); joining=false;
+      send(hostConn,{type:"join",name:me});
+      $("roomShow").textContent=room;
+      $("joinCard").style.display="none";
+      $("hostEntryCard").style.display="none";
+      $("hostCreateCard").style.display="none";
+      say("Connected to room "+room);
+      saveSession(); render();
+    });
+    hostConn.on("data",receive);
+    hostConn.on("close",()=>{hostConn=null;showPlayerJoin("Disconnected from host. Tap JOIN GAME to reconnect.");});
+    hostConn.on("error",()=>{hostConn=null;showPlayerJoin("Connection problem. Tap JOIN GAME to reconnect.");});
+  }catch(e){hostConn=null;showPlayerJoin("Connection problem. Tap JOIN GAME to try again.");}
+}
+function send(c,d){try{if(c&&c.open)c.send(d)}catch(e){}}
+function broadcast(d){conns.forEach(c=>send(c,d))}
+
+function hostData(c,d){
+  if(d.type==="join"){
+    if(d.name && !state.players.includes(d.name))state.players.push(d.name);
+    send(c,{type:"state",state:JSON.parse(JSON.stringify(state))});
+    broadcast({type:"state",state});
+    saveSession();
+    render();
+  }else if(d.type==="action"){
+    action(d.action,d.value,d.name);
+  }
+  else if(d.type==="chat"){
+    state.chat.push({name:d.name||"Player",text:d.text||""});
+    broadcast({type:"state",state}); render();
+  }
+}
+
+function receive(d){
+  if(d.type==="state"){
+    state=d.state;
+    $("roomShow").textContent=room;
+    render();
+  }
+}
+
+function request(a,v){
+  if(host)action(a,v,me);
+  else if(hostConn&&hostConn.open)send(hostConn,{type:"action",action:a,value:v,name:me});
+  else { $("status").textContent="Reconnecting to host…"; connectHost(); }
+}
+
+function action(a,v,who){
+  if(a==="spin" && host){
+    if(state.phase!=="waiting")return;
+    let waiting=state.players.filter(n=>!state.played.includes(n));
+    if(!waiting.length){state.last="🏆 Everyone has played!";state.phase="finished";return sync()}
+    state.currentName=waiting[Math.floor(Math.random()*waiting.length)];
+    state.board=deck();state.revealed=[];state.selected=null;state.offer=0;state.phase="playing";
+    state.last="🎰 "+state.currentName+" has been selected!";
+    return sync();
+  }
+  if(a==="choose"){
+    if(state.phase!=="playing"||state.selected!==null||state.currentName!==who)return;
+    let i=+v;
+    if(!Number.isInteger(i)||i<0||i>15||state.revealed.includes(i))return;
+    state.selected=i;state.revealed.push(i);
+
+    // PLAY ON is an automatic result: the same player immediately gets
+    // another choice. Do not leave the banana button/controls disabled.
+    if(state.board[i]==="PLAY ON"){
+      const player=state.currentName;
+      state.selected=null;
+      state.offer=0;
+      state.last="▶️ PLAY ON! "+player+" continues — choose another banana.";
+      return sync();
+    }
+
+    return sync();
+  }
+  if(a==="offer" && host){
+    state.offer=Math.max(0,Math.min(4,+v||0));return sync();
+  }
+  if(a==="decision"){
+    if(who!==state.currentName||state.phase!=="playing"||state.selected===null)return;
+    let r=state.board[state.selected];
+
+    // NO PEEL on a money gift rejects that gift and lets the SAME player continue.
+    if(v==="nopeel"){
+      if(r && r.charAt(0)==="£"){
+        state.revealed=state.revealed||[];
+        state.last="✖ NO PEEL! "+r+" rejected. "+state.currentName+" continues!";
+        state.selected=null;
+        state.offer=0;
+        return sync();
+      }
+      // If the revealed item is not a cash gift, NO PEEL simply keeps the turn alive.
+      state.last="✖ NO PEEL! "+state.currentName+" continues.";
+      state.selected=null;
+      return sync();
+    }
+
+    // PEEL on a cash gift accepts it and ends the player's game.
+    if(v==="peel" && r && r.charAt(0)==="£"){
+      return finish(r+" ACCEPTED — PEEL!");
+    }
+
+    // PLAY ON means keep the same player in the game.
+    if(r==="PLAY ON"){
+      state.selected=null;
+      state.last="▶️ PLAY ON! "+state.currentName+" continues.";
+      return sync();
+    }
+
+    // GAME OVER ends this player's game immediately.
+    if(r==="GAME OVER")return finish("GAME OVER");
+
+    // GIFT ANOTHER ends this player's game after they choose the recipient.
+    if(r==="GIFT ANOTHER"){
+      state.phase="gift";
+      state.last="🎁 Choose another member to receive the gift.";
+      return sync();
+    }
+
+    return finish(r);
+  }
+  if(a==="gift"){
+    if(state.phase!=="gift"||who!==state.currentName)return;
+    if(v&&v!==state.currentName&&state.players.includes(v))finish("GIFT ANOTHER → "+v);
+  }
+  if(a==="reset"&&host){
+    state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[...state.players],played:[],chat:[{name:"System",text:"New game started by the host! 🍌"}],last:"NEW GAME READY — host can spin the next player."};
+    sync();
+  }
+}
+
+function finish(r){
+  if(!state.currentName)return;
+  state.played.push(state.currentName);
+  const finishedPlayer=state.currentName;
+  state.last="🏁 "+finishedPlayer+": "+r;
+  state.phase="waiting";state.currentName=null;state.selected=null;state.offer=0;
+  sync();
+}
+
+function sync(){
+  if(host) saveSession();
+  const packet={type:"state",state:JSON.parse(JSON.stringify(state))};
+  broadcast(packet);
+  render();
+}
+function spin(){request("spin")}
+function decide(x){request("decision",x)}
+function gift(){request("gift",$("gift").value)}
+function resetGame(){request("reset")}
+
+function sendChat(){
+  let t=$("msg").value.trim();if(!t)return;
+  $("msg").value="";
+  if(host){state.chat.push({name:me,text:t});broadcast({type:"state",state});render()}
+  else if(hostConn&&hostConn.open)send(hostConn,{type:"chat",name:me,text:t});
+}
+
+function render(){
+  document.body.dataset.role = host ? "host" : ((me && room) ? "player" : "guest");
+  $("current").textContent=state.currentName||"WAITING FOR THE SPIN...";
+  $("offerText").textContent=state.last||"Waiting...";
+  if(state.phase==="playing" && state.selected!==null){
+    const revealed=state.board[state.selected];
+    if(revealed && revealed.charAt(0)==="£"){
+      $("offerText").textContent=state.currentName===me
+        ?"Choose PEEL to accept this gift, or NO PEEL to reject it and keep playing."
+        :"Waiting for "+state.currentName+" to choose PEEL or NO PEEL.";
+    }
+  }
+  $("hostShow").textContent=host?me:"—";
+  $("playerCount").textContent=state.players.length;
+
+  let selectedForMe=state.phase==="playing"&&state.currentName===me;
+  $("selectedNotice").style.display=selectedForMe?"block":"none";
+  if(selectedForMe){
+    $("selectedNotice").textContent = state.selected===null
+      ? "🎉 YOU'VE BEEN SELECTED! CHOOSE A BANANA! 🎉"
+      : "🍌 BANANA "+(state.selected+1)+" — MAKE YOUR CHOICE!";
+  }
+  if(host && state.phase==="playing" && state.selected!==null){
+    $("selectedNotice").style.display="block";
+    $("selectedNotice").textContent="🍌 "+state.currentName+" CHOSE BANANA "+(state.selected+1)+" — "+label(state.board[state.selected]);
+  }
+
+  $("bans").innerHTML="";
+  for(let i=0;i<16;i++){
+    let v=state.board[i],b=document.createElement("button");
+    b.className="banana";
+    let active=selectedForMe&&state.selected===null&&!state.revealed.includes(i);
+    b.disabled=!active;
+    b.innerHTML=(state.revealed.includes(i)&&v)?label(v):'<span class="num">'+(i+1)+'</span>';
+    b.onclick=()=>request("choose",i);
+    $("bans").appendChild(b);
+  }
+
+  let can=selectedForMe&&state.selected!==null;
+  $("peel").disabled=!can;$("nopeel").disabled=!can;
+  // Only the selected player gets decision controls. The host sees the result, not disabled controls.
+  document.querySelector(".playerChoices").style.display=(host||!selectedForMe)?"none":"grid";
+
+  $("gift").innerHTML=state.players.filter(n=>n!==state.currentName).map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join("");
+  $("gift").style.display=state.phase==="gift"&&state.currentName===me?"block":"none";
+
+  $("chat").innerHTML=state.chat.slice(-80).map(x=>'<div><b>'+esc(x.name)+':</b> '+esc(x.text)+'</div>').join("");
+  $("chat").scrollTop=$("chat").scrollHeight;
+
+  // Role-aware entry screens. On the public landing page show BOTH choices.
+  // Once a player joins, HOST A GAME disappears. A host sees only host controls.
+  document.querySelectorAll(".hostOnly").forEach(x=>x.style.display=host?"block":"none");
+  if(host){
+    $("hostEntryCard").style.display="none";
+    $("hostCreateCard").style.display="none";
+    $("joinCard").style.display="none";
+    $("hostControls").style.display="block";
+  } else if(me && room){
+    $("hostEntryCard").style.display="none";
+    $("hostCreateCard").style.display="none";
+    // If a player is not connected, leave JOIN GAME visible so they can
+    // reconnect or enter a different room.
+    $("joinCard").style.display=(hostConn&&hostConn.open)?"none":"block";
+    $("hostControls").style.display="none";
+    if(room) $("room").value=room;
+    if(me) $("name").value=me;
+  } else {
+    // Fresh visitor: both JOIN GAME and HOST A GAME are available.
+    $("joinCard").style.display="block";
+    $("hostEntryCard").style.display="block";
+    $("hostCreateCard").style.display="none";
+    $("hostControls").style.display="none";
+  }
+}
+const urlRoom=new URLSearchParams(location.search).get("room");
+if(urlRoom){ $("room").value=urlRoom.toUpperCase(); }
+if(!loadSession()) render();
+</script>
+</body>
+</html>
