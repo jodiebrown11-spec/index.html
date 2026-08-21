@@ -24,6 +24,9 @@ header{padding:14px;text-align:center;background:#09050d;border-bottom:1px solid
 <header><div class="logo">🍌 PEEL <small>OR</small> NO PEEL?</div></header>
 <main class="wrap">
 
+<div style="text-align:center;margin:10px 0">
+<button class="btn" id="hostModeBtn" onclick="showHost()">👑 HOST GAME</button>
+</div>
 <div class="card" id="joinCard">
 <h3>🎮 JOIN GAME</h3>
 <div class="join">
@@ -81,6 +84,12 @@ let state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,o
 
 const $=id=>document.getElementById(id);
 function say(t){$("status").textContent=t}
+function showHost(){
+  $("joinCard").classList.add("hidden");
+  $("hostCreateCard").classList.remove("hidden");
+  $("hostModeBtn").classList.add("hidden");
+}
+
 function shuffle(a){return a.sort(()=>Math.random()-.5)}
 function deck(){return shuffle(["£4","£3","£2","£1","GAME OVER","GAME OVER","GAME OVER","GAME OVER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","GIFT ANOTHER","PLAY ON","PLAY ON","PLAY ON","PLAY ON"])}
 function uid(){return Math.random().toString(36).slice(2,8).toUpperCase()}
@@ -92,7 +101,7 @@ function startHost(){
   const n=$("hostName").value.trim(); if(!n)return alert("Enter your host name.");
   me=n;host=true;room=uid();
   state={phase:"waiting",currentName:null,board:[],revealed:[],selected:null,offer:0,players:[],played:[],chat:[{name:"System",text:"Welcome! 🍌"}],history:[],hostName:n};
-  $("hostCreateCard").classList.add("hidden"); $("joinCard").classList.add("hidden"); $("hostControls").classList.remove("hidden");
+  $("hostCreateCard").classList.add("hidden"); $("joinCard").classList.add("hidden"); $("hostModeBtn").classList.add("hidden"); $("hostControls").classList.remove("hidden");
   $("roomShow").textContent=room;$("hostShow").textContent=n;
   $("hostStatus").textContent="Creating room...";
   peer=new Peer("peel-"+room,{debug:0});
