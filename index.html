@@ -59,7 +59,7 @@ h3{color:#ffd21c;text-align:center}
 </div>
 
 <div class="card">
-<div class="small">ROOM: <span class="room" id="roomShow">—</span> · HOST: <span id="hostShow">—</span></div>
+<div class="small">ROOM CODE</div><div class="room" id="roomShow" style="font-size:32px;text-align:center;margin:4px 0">—</div><div class="small" style="text-align:center">HOST: <span id="hostShow">—</span></div>
 <div class="player" id="current">WAITING FOR THE SPIN...</div>
 <div class="turn" id="turnText">Waiting for the host to start.</div>
 <div class="you" id="youBox"></div>
@@ -104,7 +104,7 @@ h3{color:#ffd21c;text-align:center}
 
 <div class="card" id="hostControls" style="display:none">
 <h3>🎛️ HOST CONTROLS</h3>
-<div class="host">
+<div id="hostRoomBanner" class="notice" style="font-size:24px;margin-bottom:10px">ROOM CODE: <strong id="hostRoomCode">—</strong><br><span class="small">Give this code to your players.</span></div><div class="host">
 <button class="btn" id="spin" onclick="spin()">🎰 SPIN NEXT PLAYER</button>
 <button class="btn" id="reset" onclick="resetGame()">🔄 RESET</button>
 <input id="offerInput" type="number" min="0" max="4" step=".5" placeholder="Banker offer">
@@ -143,13 +143,23 @@ function createHost(){
  if(!me)return alert("Enter your name.");
  room=uid(); host=true;
  state.hostName=me; state.players=[]; // HOST IS NOT A PLAYER
+
  $("joinCard").style.display="none";
  $("hostControls").style.display="block";
+
+ // Show the room code immediately, even before PeerJS finishes connecting.
+ $("roomShow").textContent=room;
+ $("hostShow").textContent=me;
+ $("current").textContent="GAME READY — WAITING FOR PLAYERS";
+ $("turnText").textContent="Share the room code below with your players.";
+ say("Your room code is "+room);
+
  peer=new Peer("peel-"+room,{debug:0});
 
  peer.on("open",()=>{
-  $("room").value=room;$("roomShow").textContent=room;$("hostShow").textContent=me;
-  say("Game created. Share room code: "+room);
+  $("roomShow").textContent=room;
+  $("hostShow").textContent=me;
+  say("Game created! Room code: "+room);
   render();
  });
 
@@ -287,6 +297,7 @@ function sendChat(){
 }
 
 function render(){
+ if(host){$("hostRoomCode").textContent=room||"—";$("roomShow").textContent=room||"—";$("hostShow").textContent=me||"—";}
  $("current").textContent=state.currentName||"WAITING FOR THE SPIN...";
  $("offer").textContent="£"+state.offer;
  $("offerText").textContent=state.last||(state.phase==="playing"?"Choose a banana.":"Waiting for the host.");
